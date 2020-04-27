@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>仮想環境構築</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="background">
+            <img src="haikei.jpg">
+        </div>
+        <div class="mask"></div>
+        <div class="container">
+            <h1>虎の巻：仮想環境構築</h1>
+            <section>
+                <h2>❤️VirtualBox❤️</h2>
+                <article>
+                    <h3>💡VirtualBoxとは</h3>
+                    <p>
+                        VirtualBoxはOS内に仮想のOSを作り出すソフト。<br>
+                        ubuntuやcentOSなどいろんなOSを作り出すことができる。<br>
+                        作り出すOSはboxとしてインターネット上にいろいろ公開されているから、使いたいOSを簡単にダウンロードできる。
+                    </p>
+                </article>
+            </section>
+            <section>
+                <h2>❤️Vagrant❤️</h2>
+                <article>
+                    <h3>💡Vagrantとは</h3>
+                    <p>
+                        VirtualBoxを簡単に操作するためのソフト。<br>
+                        分かりやすい簡単なコマンドでVirtualBoxの仮想マシンを操作することができる。
+                        元のOS（WindowsとかMacOS）のことをホストOSと言い、VirtualBoxのOS（ubuntuとかcentOSとか）のことをゲストOSと言う。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡Vagrantのよく使うコマンド</h3>
+                    <ul>
+                        <li class="command">
+                            $ vagrant box add 〇〇
+                        </li>
+                        <li>
+                            〇〇にはダウンロードしたいbox名を入力する。<br>
+                            このコマンドはどこのディレクトリで行なっても良い。
+                        </li><br>
+                        <li class="command">
+                            $ vagrant box list
+                        </li>
+                        <li>
+                            ダウンロード済みのboxの一覧が確認できる。
+                        </li><br>
+                        <li class="command">
+                            $ vagrant init 〇〇
+                        </li>
+                        <li>
+                            〇〇にbox名を入力する。<br>
+                            このコマンドを行うと、行なったディレクトリに「vagrantfile」が作成される。<br>
+                            別OSを作成したいディレクトリでこの操作を行う。
+                        </li><br>
+                        <li class="command">
+                            $ vagrant status
+                        </li>
+                        <li>
+                            Vagrantの状態を確認する。<br>
+                            runningになっていたら起動中でabortedは停止中。
+                        </li><br>
+                        <li class="command">
+                            $ vgrant up
+                        </li>
+                        <li>
+                            Vagrantを起動させる。
+                        </li><br>
+                        <li class="command">
+                            $ vagrant ssh
+                        </li>
+                        <li>
+                            ゲストOSにリモート接続する。<br>
+                            vagrantfileが置いてあるディレクトリで実行する必要がある。
+                        </li><br>
+                        <li class="command">
+                            $ vagrant reload
+                        </li>
+                        <li>
+                            Vagrantの再起動。<br>
+                        </li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <h2>❤️Docker❤️</h2>
+                <article>
+                    <h3>💡Dockerとは</h3>
+                    <p>
+                        Dockerはコンテナ型の仮想環境ソフト。<br>
+                        VirtualBoxと違って、OSは作り出さない。<br>
+                        コンテナを作成し、その中にいろんなアプリケーションや言語のイメージを入れる。<br>
+                        イメージはDockerFileを元に自分で作ることもでき、インターネット上からダウンロードすることもできる。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡docker-composeとは</h3>
+                    <p>
+                        Dockerを使いやすくするためのツール。<br>
+                        本来Dockerだとコンテナの設定もコマンドのため、入力ミスに繋がりやすく、同じコンテナを作る時にかなり手間がかかる。<br>
+                        docker-composeを使うと設定をファイルにすることができるので簡単に扱えるようになる。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡Docker、docker-composeのよく使うコマンド</h3>
+                    <ul>
+                        <li class="command">
+                            $ docker ps -a
+                        </li>
+                        <li>
+                            Dockerコンテナと、その状態を確認することができる。
+                        </li><br>
+                        <li class="command">
+                            $ docker stop 〇〇
+                        </li>
+                        <li>
+                            起動中のコンテナを停止させる。<br>
+                            〇〇には停止させるコンテナ名を入力する。
+                        </li><br>
+                        <li class="command">
+                            $ docker rm 〇〇
+                        </li>
+                        <li>
+                            コンテナを削除する。<br>
+                            起動中のコンテナは削除できないので、一旦停止させる必要がある。<br>
+                            〇〇にはコンテナ名を入力する。
+                        </li><br>
+                        <li class="command">
+                            $ docker-compose build 〇〇
+                        </li>
+                        <li>
+                            Dockerfileを元にイメージを作成する。<br>
+                            インターネット上からイメージを持って来る場合はこの操作は不要。
+                        </li><br>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <h2>❤️Vagrantファイル❤️</h2>
+                <article>
+                    <h3>💡Vagrantファイルとは</h3>
+                    <p>
+                        Vagrantの設定ファイルで「vagrant init ○○」をしたディレクトリに作成される「vagrantfile」のこと。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡変更個所</h3>
+                    <li class="command">
+                        #config.vm.network "forwarded_port", guest: 80, host: 8080
+                    </li>
+                    <li>
+                        まずはコメントアウトを消しましょう（先頭の#を消すってこと）<br>
+                        hostのポートがデフォルトだと8080になっているので、もし他にもvagrantとかを起動していて被りそうなら変更が必要。
+                    </li><br>
+                    <li class="command">
+                        #config.vm.network "private_network", ip: "192.168.33.10"
+                    </li>
+                    <li>
+                        まずはコメントアウトを消しましょう。<br>
+                        これはホストOSのブラウザでアクセスするときのIPって感じ。<br>
+                        他にもVagrantを起動しているなら被らないように192.168.55.10とかに変更して別セグメントにしよう。
+                    </li><br>
+                    <li class="command">
+                        #config.vm.synced_folder "../data", "/vagrant_data"
+                    </li>
+                    <li>
+                        まずはコメントアウトを消しましょう。<br>
+                        これはホストOSとゲストOSでのフォルダー共有設定。<br>
+                        "../data"ってとこがホストOSのフォルダーだから「Desktop/プロジェクト名/vagrantfile」っていう構成の場合、"./"に書き換えておけば「Desktop/プロジェクト名」の中身が全てゲストOSと同期される。<br>
+                        "/vagrant_data"ってとこがゲストOS側の共有したファイルが置かれる場所で、何度もアクセスするため文字数が長いとめんどくさいので"/vagrant"に書き換えた方が良いと思う。
+                    </li>
+                </article>
+            </section>
+            <section>
+                <h2>❤️envファイル❤️</h2>
+                <article>
+                    <h3>💡envファイルとは</h3>
+                    <p>
+                        Laradockの環境変数ファイルでLaradock直下にある「env-example」を元に作成する。<br>
+                        具体的には「$ cp env-example .env」を実行すると.envという名前でコピーされる。<br>
+                        Dockerでのバージョンやパスなど、いろんなものをこのファイルでは変数に代入している。<br>
+                        あくまでこのファイルでは変数に代入してるだけ。<br>
+                        なので、例えばNginxのポート番号はこのファイルでは「NGINX_HOST_HTTP_PORT」という変数に代入されてdocker-compose.ymlで使用される。<br>
+                        この場合にこのファイルではポート番号「80」で、docker-compose.ymlの「${NGINX_HOST_HTTP_PORT}」という記述を消して「82」と書き換えた場合、実際のポート番号は「82」になる。<br>
+                        ただ、このファイルで定義した環境変数を複数個所で使用している場合も多々あるので、出来る限りこのファイルで書き換えた方が簡単だし修正も楽。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡変更箇所：Paths</h3>
+                    <ul>
+                        <li class="command">
+                            DATA_PATH_HOST=~/.laradock/data
+                        </li>
+                        <li>
+                            ドッカー内のデータをホストのどこに保存するかの設定。<br>
+                            「~/.○○/data」の○○の部分にプロジェクト名などを入れる。
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>💡変更箇所：PHP Version</h3>
+                    <ul>
+                        <li class="command">
+                            PHP_VERSION=7.3
+                        </li>
+                        <li>
+                            ここで使いたいPHPバージョンに書き換える。
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>💡変更箇所：NGINX</h3>
+                    <ul>
+                        <li class="command">
+                            NGINX_HOST_HTTP_PORT=80
+                        </li>
+                        <li>
+                            これが「http://localhost:○○」の○○にあたるポート番号。<br>
+                            他のプロジェクトだったり、Apacheも使う場合などは被らないように書き換える必要がある。
+                        </li><br>
+                        <li class="command">
+                            NGINX_HOST_HTTPS_PORT=443
+                        </li>
+                        <li>
+                            １つ上のもののhttps版。<br>
+                            これも他と被ってはいけない。
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>💡変更箇所：APACHE</h3>
+                    <ul>
+                        <li class="command">
+                            APACHE_HOST_HTTP_PORT=80
+                        </li>
+                        <li>
+                            NGINXのポート設定と同じく、これが「http://localhost:○○」の○○にあたる。<br>
+                            他と被ってはいけない。
+                        </li><br>
+                        <li class="command">
+                            APACHE_HOST_HTTPS_PORT=443
+                        </li>
+                        <li>
+                            １つ上のもののhttps版。<br>
+                            他と被ってはいけない。
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>💡変更箇所：MYSQL</h3>
+                    <ul>
+                        <li class="command">
+                            MYSQL_VERSION=latest
+                        </li>
+                        <li>
+                            バージョン。
+                        </li><br>
+                        <li class="command">
+                            MYSQL_DATABASE=default
+                        </li>
+                        <li>
+                            データベース名。
+                        </li><br>
+                        <li class="command">
+                            MYSQL_USER=default
+                        </li>
+                        <li>
+                            ユーザー名。
+                        </li><br>
+                        <li class="command">
+                            MYSQL_PASSWORD=secret
+                        </li>
+                        <li>
+                            パスワード。
+                        </li><br>
+                        <li class="command">
+                            MYSQL_PORT=3306
+                        </li>
+                        <li>
+                            当然ながらこのポート番号も他と被ってはいけない。
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>💡変更箇所：POSTGRES</h3>
+                    <ul>
+                        <li class="command">
+                            POSTGRES_VERSION=alpine
+                        </li>
+                        <li>
+                            バージョン。
+                        </li><br>
+                        <li class="command">
+                            POSTGRES_DB=default
+                        </li>
+                        <li>
+                            データベース名。
+                        </li><br>
+                        <li class="command">
+                            POSTGRES_USER=default
+                        </li>
+                        <li>
+                            ユーザー名。
+                        </li><br>
+                        <li class="command">
+                            POSTGRES_PASSWORD=secret
+                        </li>
+                        <li>
+                            パスワード。
+                        </li><br>
+                        <li class="command">
+                            POSTGRES_PORT=5432
+                        </li>
+                        <li>
+                            当然ながらこのポート番号も他と被ってはいけない。
+                        </li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <h2>❤️docker-compose.ymlファイル❤️</h2>
+                <article>
+                    <h3>💡docker-compose.ymlファイルとは</h3>
+                    <p>
+                        通称ymlファイルで、laradock直下にある。<br>
+                        docker-composeコマンドを実行すると、このファイルを元に動作する。<br>
+                        ${}で書かれているものはenvファイルで設定されている環境変数。<br>
+                        Laradockではほとんどのことが環境変数としてenvファイルで設定されているため、このファイルをいじることはあまり無い。
+                    </p>
+                </article>
+            </section>
+            <section>
+                <h2>❤️Apacheの設定ファイル❤️</h2>
+                <article>
+                    <h3>💡Apacheの設定ファイルについて</h3>
+                    <p>
+                        Apacheの設定ファイルは、laradock/apache2/sites/にある「default.apache.conf」。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡変更箇所</h3>
+                    <ul>
+                        <li class="command">
+                            ServerName laradock.test
+                        </li>
+                        <li>
+                            アクセスするサーバー名なので、ここは「ServerName localhost」に変更すればいい。
+                        </li><br>
+                        <li class="command">
+                            DocumentRoot /var/www/
+                        </li>
+                        <li>
+                            プログラムのソースコードを置く場所を指定する。<br>
+                            envファイルの「APP_CODE_PATH_HOST」と「APP_CODE_PATH_CONTAINER」を変更していなければlaradockの親ディレクトリが「/var/www/」の場所になる。<br>
+                            例えば「Desktop/プロジェクト名/laradock」となっている場合、「プロジェクト名」の場所が「/var/www/」になる。<br>
+                            なので、「Desktop/プロジェクト名/public」にプログラムのソースコードを保存している場合は「DocumentRoot /var/www/public」に書き換えれば良い。
+                        </li><br>
+                        <li class="command">
+                            &lt;Directory "/var/www/"&gt;
+                        </li>
+                        <li>
+                            恐らくアクセス権限に関する記述なので、上の「DocumentRoot」と同じディレクトリを指定すれば良い。
+                        </li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <h2>❤️Nginxの設定ファイル❤️</h2>
+                <article>
+                    <h3>💡Nginxの設定ファイルについて</h3>
+                    <p>
+                        Nginxの設定ファイルは、laradock/nginx/sites/の中にある「default.conf」。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡変更箇所</h3>
+                    <ul>
+                        <li class="command">
+                            root /var/www/public;
+                        </li>
+                        <li>
+                            Apache設定のDocumentRootと同じ考え方。
+                        </li>
+                    </ul>
+                </article>
+            </section>
+        </div>
+    </body>
+</html>
