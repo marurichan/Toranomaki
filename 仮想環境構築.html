@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <!-- https://qiita.com/ymasaoka/items/b6c3ffea060bcd237478 -->
+        <!-- https://www.codebu.org/posts/docker-dockercompose/ -->
         <div class="background">
             <img src="haikei.jpg">
         </div>
@@ -14,6 +16,7 @@
             <h1>虎の巻：仮想環境構築</h1>
             <section>
                 <h2>❤️VirtualBox❤️</h2>
+                <span>❤️VirtualBox❤️</span>
                 <article>
                     <h3>💡VirtualBoxとは</h3>
                     <p>
@@ -82,8 +85,65 @@
                         </li>
                         <li>
                             Vagrantの再起動。<br>
+                        </li><br>
+                        <li class="command">
+                            $ vagrant ssh-config
+                        </li>
+                        <li>
+                            SSH接続に関する情報を見ることができる。
                         </li>
                     </ul>
+                </article>
+                <article>
+                    <h3>💡Vagrant操作の流れ</h3>
+                    <ul>
+                        <li>
+                            まず初めに
+                        </li>
+                        <li class="command">
+                            $ vagrant box add 〇〇
+                        </li>
+                        <li>
+                            で使用するBoxを用意する。
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>💡Vagrantファイルとは</h3>
+                    <p>
+                        Vagrantの設定ファイルで「vagrant init ○○」をしたディレクトリに作成される「vagrantfile」のこと。
+                    </p>
+                </article>
+                <article>
+                    <h3>💡変更個所</h3>
+                    <li class="command">
+                        #config.vm.network "forwarded_port", guest: 80, host: 8080
+                    </li>
+                    <li>
+                        まずはコメントアウトを消しましょう（先頭の#を消すってこと）<br>
+                        lcalhostとvagrantのポート転送設定。
+                        VagrantのIPアドレスは192.168.〇〇.〇〇だが、localhostのIPアドレスは127.0.0.1。
+                        そうするとIPが違うので、通常は「http://localhost:8080」でVagrant内のサーバーにアクセスすることはできず、「http://192.168.〇〇.〇〇:8080」にアクセスする必要がある。
+                        だけどこのポート転送設定を使うと、「http://localhost:8080」にアクセスされたら「http://192.168.33.10:8080」に転送するってことができる。
+                        この設定にしたければ「#config.vm.network "forwarded_port", guest: 8080, host: 8080」に設定すれば良い。
+                    </li><br>
+                    <li class="command">
+                        #config.vm.network "private_network", ip: "192.168.33.10"
+                    </li>
+                    <li>
+                        まずはコメントアウトを消しましょう。<br>
+                        これはホストOSのブラウザでアクセスするときのIPって感じ。<br>
+                        他にもVagrantを起動しているなら被らないように192.168.55.10とかに変更して別セグメントにしよう。
+                    </li><br>
+                    <li class="command">
+                        #config.vm.synced_folder "../data", "/vagrant_data"
+                    </li>
+                    <li>
+                        まずはコメントアウトを消しましょう。<br>
+                        これはホストOSとゲストOSでのフォルダー共有設定。<br>
+                        "../data"ってとこがホストOSのフォルダーだから「Desktop/プロジェクト名/vagrantfile」っていう構成の場合、"./"に書き換えておけば「Desktop/プロジェクト名」の中身が全てゲストOSと同期される。<br>
+                        "/vagrant_data"ってとこがゲストOS側の共有したファイルが置かれる場所で、何度もアクセスするため文字数が長いとめんどくさいので"/vagrant"に書き換えた方が良いと思う。
+                    </li>
                 </article>
             </section>
             <section>
@@ -137,42 +197,6 @@
                             インターネット上からイメージを持って来る場合はこの操作は不要。
                         </li><br>
                     </ul>
-                </article>
-            </section>
-            <section>
-                <h2>❤️Vagrantファイル❤️</h2>
-                <article>
-                    <h3>💡Vagrantファイルとは</h3>
-                    <p>
-                        Vagrantの設定ファイルで「vagrant init ○○」をしたディレクトリに作成される「vagrantfile」のこと。
-                    </p>
-                </article>
-                <article>
-                    <h3>💡変更個所</h3>
-                    <li class="command">
-                        #config.vm.network "forwarded_port", guest: 80, host: 8080
-                    </li>
-                    <li>
-                        まずはコメントアウトを消しましょう（先頭の#を消すってこと）<br>
-                        hostのポートがデフォルトだと8080になっているので、もし他にもvagrantとかを起動していて被りそうなら変更が必要。
-                    </li><br>
-                    <li class="command">
-                        #config.vm.network "private_network", ip: "192.168.33.10"
-                    </li>
-                    <li>
-                        まずはコメントアウトを消しましょう。<br>
-                        これはホストOSのブラウザでアクセスするときのIPって感じ。<br>
-                        他にもVagrantを起動しているなら被らないように192.168.55.10とかに変更して別セグメントにしよう。
-                    </li><br>
-                    <li class="command">
-                        #config.vm.synced_folder "../data", "/vagrant_data"
-                    </li>
-                    <li>
-                        まずはコメントアウトを消しましょう。<br>
-                        これはホストOSとゲストOSでのフォルダー共有設定。<br>
-                        "../data"ってとこがホストOSのフォルダーだから「Desktop/プロジェクト名/vagrantfile」っていう構成の場合、"./"に書き換えておけば「Desktop/プロジェクト名」の中身が全てゲストOSと同期される。<br>
-                        "/vagrant_data"ってとこがゲストOS側の共有したファイルが置かれる場所で、何度もアクセスするため文字数が長いとめんどくさいので"/vagrant"に書き換えた方が良いと思う。
-                    </li>
                 </article>
             </section>
             <section>
@@ -386,6 +410,29 @@
                             Apache設定のDocumentRootと同じ考え方。
                         </li>
                     </ul>
+                </article>
+            </section>
+            <section>
+                <h2>❤️実践編：第１弾❤️</h2>
+                <article>
+                    <h3>💡概要</h3>
+                    <p>
+                        実践編は全てVirtualBox + Vagrant + Docker + docker-composeを使用する。<br>
+                        今回作成する環境と条件は以下<br>
+                        ・サーバー：Apache<br>
+                        ・データベース：MySQL<br>
+                        ・PHPバージョン：7.2<br>
+                        ・ホストOS：MacOS<br>
+                        ・ゲストOS：centos/7
+                    </p>
+                </article>
+                <article>
+                    <h3>💡流れ</h3>
+                    <p>
+                        １、vagrantでVMを作成する
+                        ２、VM内でDockerとdocker-composeをインストールする
+                        ３、
+                    </p>
                 </article>
             </section>
         </div>
